@@ -169,7 +169,9 @@ void Transact::rejigData()
 		QString lll;
 		QString solidity;
 		if (src.find_first_not_of("1234567890abcdefABCDEF") == string::npos && src.size() % 2 == 0)
+		{
 			m_data = fromHex(src);
+		}
 		else if (sourceIsSolidity(src))
 		{
 			dev::solidity::CompilerStack compiler;
