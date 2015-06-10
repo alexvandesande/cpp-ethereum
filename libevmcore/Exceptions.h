@@ -28,8 +28,8 @@ namespace dev
 namespace eth
 {
 
-DEV_SIMPLE_EXCEPTION(InvalidDeposit);
-DEV_SIMPLE_EXCEPTION(InvalidOpcode);
+struct InvalidDeposit: virtual Exception {};
+struct InvalidOpcode: virtual Exception {};
 
 }
 }

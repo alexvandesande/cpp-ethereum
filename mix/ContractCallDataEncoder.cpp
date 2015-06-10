@@ -29,7 +29,6 @@
 #include "QVariableDefinition.h"
 #include "QFunctionDefinition.h"
 #include "ContractCallDataEncoder.h"
-using namespace std;
 using namespace dev;
 using namespace dev::solidity;
 using namespace dev::mix;
@@ -226,12 +225,6 @@ QVariant ContractCallDataEncoder::decode(SolidityType const& _type, bytes const&
 		return QVariant::fromValue(toString(decodeBytes(unpadLeft(rawParam))));
 	else
 		BOOST_THROW_EXCEPTION(Exception() << errinfo_comment("Parameter declaration not found"));
-}
-
-QString ContractCallDataEncoder::decode(QVariableDeclaration* const& _param, bytes _value)
-{
-	SolidityType const& type = _param->type()->type();
-	return decode(type, _value).toString();
 }
 
 QStringList ContractCallDataEncoder::decode(QList<QVariableDeclaration*> const& _returnParameters, bytes _value)

@@ -61,7 +61,7 @@ bytes Secp256k1::eciesKDF(Secret _z, bytes _s1, unsigned kdByteLen)
 	}
 	
 	k.resize(kdByteLen);
-	return k;
+	return move(k);
 }
 
 void Secp256k1::encryptECIES(Public const& _k, bytes& io_cipher)
@@ -264,6 +264,7 @@ Public Secp256k1::recover(Signature _signature, bytesConstRef _message)
 	
 	ECP::Element x;
 	{
+		Guard l(x_curve);
 		m_curve.DecodePoint(x, encodedpoint, 33);
 		if (!m_curve.VerifyPoint(x))
 			return recovered;
@@ -285,6 +286,7 @@ Public Secp256k1::recover(Signature _signature, bytesConstRef _message)
 	ECP::Point p;
 	byte recoveredbytes[65];
 	{
+		Guard l(x_curve);
 		// todo: make generator member
 		p = m_curve.CascadeMultiply(u2, x, u1, m_params.GetSubgroupGenerator());
 		m_curve.EncodePoint(recoveredbytes, p, false);

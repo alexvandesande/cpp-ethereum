@@ -196,8 +196,6 @@ public:
 	virtual void stopMining() = 0;
 	/// Are we mining now?
 	virtual bool isMining() const = 0;
-	/// Would we like to mine now?
-	virtual bool wouldMine() const = 0;
 	/// Current hash rate.
 	virtual uint64_t hashrate() const = 0;
 

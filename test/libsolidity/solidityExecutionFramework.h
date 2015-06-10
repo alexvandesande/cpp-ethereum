@@ -148,8 +148,6 @@ protected:
 	{
 		m_state.addBalance(m_sender, _value); // just in case
 		eth::Executive executive(m_state, eth::LastHashes(), 0);
-		eth::ExecutionResult res;
-		executive.setResultRecipient(res);
 		eth::Transaction t =
 			_isCreation ?
 				eth::Transaction(_value, m_gasPrice, m_gas, _data, 0, KeyPair::create().sec()) :
@@ -178,7 +176,7 @@ protected:
 		m_state.noteSending(m_sender);
 		executive.finalize();
 		m_gasUsed = executive.gasUsed();
-		m_output = std::move(res.output); // FIXME: Looks like Framework needs ExecutiveResult embedded
+		m_output = executive.out().toVector();
 		m_logs = executive.logs();
 	}
 

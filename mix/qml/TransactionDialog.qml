@@ -17,7 +17,6 @@ Dialog {
 	visible: false
 	title: qsTr("Edit Transaction")
 	property int transactionIndex
-	property int blockIndex
 	property alias gas: gasValueEdit.gasValue;
 	property alias gasAuto: gasAutoCheck.checked;
 	property alias gasPrice: gasPriceField.value;
@@ -28,24 +27,21 @@ Dialog {
 	property var paramsModel: [];
 	property bool useTransactionDefaultValue: false
 	property alias stateAccounts: senderComboBox.model
-	property bool saveStatus
 	signal accepted;
 
 	StateDialogStyle {
 		id: transactionDialogStyle
 	}
 
-	function open(index, blockIdx, item) {
+	function open(index, item) {
 		rowFunction.visible = !useTransactionDefaultValue;
 		rowValue.visible = !useTransactionDefaultValue;
 		rowGas.visible = !useTransactionDefaultValue;
 		rowGasPrice.visible = !useTransactionDefaultValue;
 
-		transactionIndex = index
-		blockIndex = blockIdx
-		typeLoader.transactionIndex = index
-		typeLoader.blockIndex = blockIdx
-		saveStatus = item.saveStatus
+		transactionIndex = index;
+		typeLoader.transactionIndex = index;
+
 		gasValueEdit.gasValue = item.gas;
 		gasAutoCheck.checked = item.gasAuto ? true : false;
 		gasPriceField.value = item.gasPrice;
@@ -233,7 +229,7 @@ Dialog {
 			item.functionId = item.contractId;
 			item.label = qsTr("Deploy") + " " + item.contractId;
 		}
-		item.saveStatus = saveStatus
+
 		item.sender = senderComboBox.model[senderComboBox.currentIndex].secret;
 		item.parameters = paramValues;
 		return item;

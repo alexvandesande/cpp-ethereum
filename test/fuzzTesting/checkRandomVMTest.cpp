@@ -98,9 +98,9 @@ bool doVMTest(mValue& _v)
 		try
 		{
 			auto vm = eth::VMFactory::create();
-			output = vm->exec(fev.gas, fev, fev.simpleTrace());
+			output = vm->go(fev.gas, fev, fev.simpleTrace()).toBytes();
 		}
-		catch (eth::VMException const&)
+		catch (eth::VMException)
 		{
 			cnote << "Safe VM Exception";
 			vmExceptionOccured = true;

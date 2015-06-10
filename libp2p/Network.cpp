@@ -111,7 +111,7 @@ std::set<bi::address> Network::getInterfaceAddresses()
 
 #endif
 
-	return addresses;
+	return std::move(addresses);
 }
 
 int Network::tcp4Listen(bi::tcp::acceptor& _acceptor, NetworkPreferences const& _netPrefs)

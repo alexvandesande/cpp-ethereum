@@ -107,8 +107,7 @@ public:
 	virtual std::string eth_compileSerpent(std::string const& _s);
 	virtual std::string eth_compileSolidity(std::string const& _code);
 	virtual std::string eth_newFilter(Json::Value const& _json);
-	virtual std::string eth_newBlockFilter();
-	virtual std::string eth_newPendingTransactionFilter();
+	virtual std::string eth_newBlockFilter(std::string const& _filter);
 	virtual bool eth_uninstallFilter(std::string const& _filterId);
 	virtual Json::Value eth_getFilterChanges(std::string const& _filterId);
 	virtual Json::Value eth_getFilterLogs(std::string const& _filterId);

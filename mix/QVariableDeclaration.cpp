@@ -24,32 +24,27 @@
 #include <libsolidity/AST.h>
 #include "CodeModel.h"
 
-using namespace solidity;
-
 namespace dev
 {
 namespace mix
 {
 
-QVariableDeclaration::QVariableDeclaration(QObject* _parent, ASTPointer<VariableDeclaration> const _v):
-	QBasicNodeDefinition(_parent, _v.get()),
+QVariableDeclaration::QVariableDeclaration(QObject* _parent, solidity::VariableDeclaration const* _v):
+	QBasicNodeDefinition(_parent, _v),
 	m_type(new QSolidityType(this, CodeModel::nodeType(_v->getType().get())))
 {
-	m_isIndexed = _v->isIndexed();
 }
 
-QVariableDeclaration::QVariableDeclaration(QObject* _parent, std::string const& _name,  SolidityType const& _type, bool _isIndexed):
+QVariableDeclaration::QVariableDeclaration(QObject* _parent, std::string const& _name,  SolidityType const& _type):
 	QBasicNodeDefinition(_parent, _name),
 	m_type(new QSolidityType(_parent, _type))
 {
-	m_isIndexed = _isIndexed;
 }
 
-QVariableDeclaration::QVariableDeclaration(QObject* _parent, std::string const& _name,  solidity::Type const* _type, bool _isIndexed):
+QVariableDeclaration::QVariableDeclaration(QObject* _parent, std::string const& _name,  solidity::Type const* _type):
 	QBasicNodeDefinition(_parent, _name),
 	m_type(new QSolidityType(this, CodeModel::nodeType(_type)))
 {
-	m_isIndexed = _isIndexed;
 }
 
 QSolidityType::QSolidityType(QObject* _parent, SolidityType const& _type):

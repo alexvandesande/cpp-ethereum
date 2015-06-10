@@ -154,7 +154,7 @@ h128 RLPXFrameIO::egressDigest()
 	SHA3_256 h(m_egressMac);
 	h128 digest;
 	h.TruncatedFinal(digest.data(), h128::size);
-	return digest;
+	return move(digest);
 }
 
 h128 RLPXFrameIO::ingressDigest()
@@ -162,7 +162,7 @@ h128 RLPXFrameIO::ingressDigest()
 	SHA3_256 h(m_ingressMac);
 	h128 digest;
 	h.TruncatedFinal(digest.data(), h128::size);
-	return digest;
+	return move(digest);
 }
 
 void RLPXFrameIO::updateEgressMACWithHeader(bytesConstRef _headerCipher)

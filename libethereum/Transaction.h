@@ -25,7 +25,6 @@
 #include <libdevcore/SHA3.h>
 #include <libethcore/Common.h>
 #include <libevmcore/Params.h>
-
 namespace dev
 {
 namespace eth
@@ -49,8 +48,6 @@ enum class TransactionException
 {
 	None = 0,
 	Unknown,
-	BadRLP,
-	OutOfGasIntrinsic,		///< Too little gas to pay for the base transaction cost.
 	InvalidSignature,
 	InvalidNonce,
 	NotEnoughCash,
@@ -72,20 +69,30 @@ enum class CodeDeposit
 
 struct VMException;
 
-TransactionException toTransactionException(Exception const& _e);
-std::ostream& operator<<(std::ostream& _out, TransactionException const& _er);
+TransactionException toTransactionException(VMException const& _e);
 
 /// Description of the result of executing a transaction.
 struct ExecutionResult
 {
+	ExecutionResult() = default;
+	ExecutionResult(u256 const& _gasUsed, TransactionException _excepted, Address const& _newAddress, bytesConstRef _output, CodeDeposit _codeDeposit, u256 const& _gasRefund, unsigned _depositSize, u256 const& _gasForDeposit):
+		gasUsed(_gasUsed),
+		excepted(_excepted),
+		newAddress(_newAddress),
+		output(_output.toBytes()),
+		codeDeposit(_codeDeposit),
+		gasRefunded(_gasRefund),
+		depositSize(_depositSize),
+		gasForDeposit(_gasForDeposit)
+	{}
 	u256 gasUsed = 0;
 	TransactionException excepted = TransactionException::Unknown;
 	Address newAddress;
 	bytes output;
-	CodeDeposit codeDeposit = CodeDeposit::None;					///< Failed if an attempted deposit failed due to lack of gas.
+	CodeDeposit codeDeposit = CodeDeposit::None;
 	u256 gasRefunded = 0;
-	unsigned depositSize = 0; 										///< Amount of code of the creation's attempted deposit.
-	u256 gasForDeposit; 											///< Amount of gas remaining for the code deposit phase.
+	unsigned depositSize = 0;
+	u256 gasForDeposit;
 };
 
 std::ostream& operator<<(std::ostream& _out, ExecutionResult const& _er);
@@ -227,6 +234,9 @@ inline std::ostream& operator<<(std::ostream& _out, Transaction const& _t)
 	_out << "<-" << _t.safeSender().abridged() << " #" << _t.nonce() << "}";
 	return _out;
 }
+
+void badTransaction(bytesConstRef _tx, std::string const& _err);
+inline void badTransaction(bytes const& _tx, std::string const& _err) { badTransaction(&_tx, _err); }
 
 }
 }
