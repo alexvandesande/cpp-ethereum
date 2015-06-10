@@ -400,16 +400,17 @@ h256s ClientBase::pendingHashes() const
 	return h256s() + postMine().pendingHashes();
 }
 
+
 StateDiff ClientBase::diff(unsigned _txi, h256 _block) const
 {
 	State st = asOf(_block);
-	return st.fromPending(_txi).diff(st.fromPending(_txi + 1), true);
+	return st.fromPending(_txi).diff(st.fromPending(_txi + 1));
 }
 
 StateDiff ClientBase::diff(unsigned _txi, BlockNumber _block) const
 {
 	State st = asOf(_block);
-	return st.fromPending(_txi).diff(st.fromPending(_txi + 1), true);
+	return st.fromPending(_txi).diff(st.fromPending(_txi + 1));
 }
 
 Addresses ClientBase::addresses(BlockNumber _block) const

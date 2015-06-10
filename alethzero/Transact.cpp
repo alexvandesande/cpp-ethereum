@@ -360,7 +360,7 @@ void Transact::rejigData()
 		return;
 	}
 	else
-		gasNeeded = (qint64)min<bigint>(ethereum()->gasLimitRemaining(), ((b - value()) / max<u256>(gasPrice(), 1)));
+		gasNeeded = (qint64)min<bigint>(ethereum()->gasLimitRemaining(), ((b - value()) / gasPrice()));
 
 	// Dry-run execution to determine gas requirement and any execution errors
 	Address to;

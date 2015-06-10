@@ -37,7 +37,7 @@ Topics createRandomTopics(unsigned int i)
 		ret.push_back(t);
 	}
 
-	return ret;
+	return move(ret);
 }
 
 bytes createRandomPayload(unsigned int i)
@@ -48,7 +48,7 @@ bytes createRandomPayload(unsigned int i)
 	for (int j = 0; j < sz; ++j)
 		ret.push_back(rand() % 256);
 
-	return ret;
+	return move(ret);
 }
 
 void comparePayloads(Message const& m1, Message const& m2)

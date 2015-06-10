@@ -340,7 +340,6 @@ void Ethash::GPUMiner::workLoop()
 				if (shouldStop())
 				{
 					delete m_miner;
-					m_miner = nullptr;
 					return;
 				}
 				cnote << "Awaiting DAG";
@@ -355,8 +354,6 @@ void Ethash::GPUMiner::workLoop()
 	}
 	catch (cl::Error const& _e)
 	{
-		delete m_miner;
-		m_miner = nullptr;
 		cwarn << "Error GPU mining: " << _e.what() << "(" << _e.err() << ")";
 	}
 }
@@ -367,6 +364,11 @@ void Ethash::GPUMiner::pause()
 	stopWorking();
 }
 
+bool Ethash::GPUMiner::haveSufficientGPUMemory()
+{
+	return ethash_cl_miner::haveSufficientGPUMemory(s_platformId);
+}
+
 std::string Ethash::GPUMiner::platformInfo()
 {
 	return ethash_cl_miner::platform_info(s_platformId, s_deviceId);
@@ -375,16 +377,6 @@ std::string Ethash::GPUMiner::platformInfo()
 unsigned Ethash::GPUMiner::getNumDevices()
 {
 	return ethash_cl_miner::get_num_devices(s_platformId);
-}
-
-void Ethash::GPUMiner::listDevices()
-{
-	return ethash_cl_miner::listDevices();
-}
-
-bool Ethash::GPUMiner::haveSufficientMemory()
-{
-	return ethash_cl_miner::haveSufficientGPUMemory();
 }
 
 #endif

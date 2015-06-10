@@ -781,15 +781,17 @@ string WebThreeStubServerBase::eth_newFilter(Json::Value const& _json)
 	}
 }
 
-string WebThreeStubServerBase::eth_newBlockFilter()
+string WebThreeStubServerBase::eth_newBlockFilter(string const& _filter)
 {
-	h256 filter = dev::eth::ChainChangedFilter;
-	return toJS(client()->installWatch(filter));
-}
-
-string WebThreeStubServerBase::eth_newPendingTransactionFilter()
-{
-	h256 filter = dev::eth::PendingChangedFilter;
+	h256 filter;
+	
+	if (_filter.compare("chain") == 0 || _filter.compare("latest") == 0)
+		filter = dev::eth::ChainChangedFilter;
+	else if (_filter.compare("pending") == 0)
+		filter = dev::eth::PendingChangedFilter;
+	else
+		BOOST_THROW_EXCEPTION(JsonRpcException(Errors::ERROR_RPC_INVALID_PARAMS));
+	
 	return toJS(client()->installWatch(filter));
 }
 
